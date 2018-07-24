@@ -18,12 +18,14 @@ const { facebook, google } = require('./config');
 
 const transformFacebookProfile = (profile) => (
     {
+        id: profile.id,
         name: profile.name,
         avatar: profile.picture.data.url,
 });
 
 const transformGoogleProfile = (profile) => (
     {
+        id: profile.id,
         name: profile.displayName,
         avatar: profile.image.url,
 });
@@ -38,8 +40,19 @@ passport.use(new GoogleStrategy(google,async (accessToken, refreshToken, profile
     }
 ));
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
+passport.serializeUser(function(user, done) {
+    console.log('serializeUser: ', user)
+    done(null, user.id);
+});``
+
+passport.deserializeUser(function(id, done) {
+    console.log('deserializeUser: ' + id)
+    let user = users.find(u => u.id === id)
+    if (!user) { done(new Error('User not found! ' + id))}
+    done(null, user)
+});
+  
+
 
 app.use(cors())
 app.use(bodyParser.json());
@@ -56,8 +69,7 @@ app.use('/group', group)
 app.use('/message', message)
 
 const server = app.listen(3000, () => {
-    const { address, port } = server.address();
-    console.log(`Listening at http://${address}:${port}`);
+    console.log(`Listening at 3000`);
 });
 
 module.exports = app;

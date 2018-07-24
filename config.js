@@ -8,7 +8,7 @@ const facebook = {
 const google = {
     clientID: '455894563217-8ftdu6tff4os0hd1sp4t202jmln7bj7j.apps.googleusercontent.com',
     clientSecret: 'U1tG54rKYMBe9Z4Bk0eUcv2Q',
-    callbackURL: 'http://localhost:3000/auth/google/',
+    callbackURL: 'http://localhost:3000/auth/google/callback',
 };
 
 module.exports.facebook = facebook;
